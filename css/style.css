@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+AU+SA:wght@100..400&display=swap');
+
+
+body {
+    background-color: beige;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+}
+
+.card #searchInput {
+    padding: 5px 10px;
+    border: 2px solid #dfe6e9;
+    border-radius: 4px;
+    width: 90%;
+    box-sizing: border-box;
+    font-family: "Playwrite AU SA", serif;
+    font-size: 13px;
+}
+
+.card button {
+    padding: 5px;
+    border: 2px solid hsl(0, 0%, 55%);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: "Playwrite AU SA", serif;
+    font-size: 13px;
+}
+
+.card button:hover{
+    background-color: #1A435F;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.titulo {
+    font-size: 18px;
+    text-align: center;
+    font-family: "Playwrite AU SA", serif;
+}
+
+.event-card{
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    width: 30%;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.box img {
+    width: auto; 
+    height: 325px; 
+    border-radius: 5%;
+}
