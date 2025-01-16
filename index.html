@@ -1,38 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Peliculas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Página de Películas</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="titulo">
-        <h1>Peliculas y Series</h1>
-    </div>
-    <div class="card">
-        <input type="text" id="searchInput" placeholder="Buscar Peliculas...">
-        <button onclick="search()">Buscar</button>
-    </div>
-    <div class="event-card">
-        <div class="box">
-            <a href="" target="_blank"></a>
-            <img src="img/mufasa.jpeg" alt="">
-        </div>
-        <div class="box">
-            <a href="" target="_blank"></a>
-            <img src="img/mufasa.jpeg" alt="">
-        </div>
-        <div class="box">
-            <a href="" target="_blank"></a>
-            <img src="img/mufasa.jpeg" alt="">
-        </div>
-        <div class="box">
-            <a href="" target="_blank"></a>
-            <img src="img/mufasa.jpeg" alt="">
-        </div>
-        
-    </div>
+  <header>
+    <h1>Películas Campus</h1>
+  </header>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar película...">
+    <button id="searchButton">Buscar</button>
+    <div id="suggestionsContainer" class="suggestions-container"></div> <!-- Contenedor de sugerencias aquí -->
+  </div>
+  <div class="container" id="movieContainer">
+    <!-- Las tarjetas de películas se generarán aquí dinámicamente -->
+  </div>
+  <div id="noResultMessage" style="display: none;">La película no existe</div>
 
+  <script src="js/script.js" type="module"></script>
 </body>
 </html>
+
+
