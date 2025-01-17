@@ -1,4 +1,4 @@
-📌 Link del Sitio: peliculascampus.netlify.app
+📌 Link del Sitio: https://peliculascampus.netlify.app
 
 # Catálogo de Películas 🎥
 
