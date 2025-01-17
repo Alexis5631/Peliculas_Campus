@@ -5,13 +5,13 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: rgb(233, 235, 236);
 }
   
 header {
-text-align: center;
-padding: 20px;
-font-family: "Playwrite AU SA", serif;
+    text-align: center;
+    padding: 20px;
+    font-family: "Playwrite AU SA", serif;
 }
 
 h1 {
@@ -20,6 +20,7 @@ h1 {
 
 /* Estilos para la barra de búsqueda y el contenedor del botón */
 .search-container {
+    font-family: "Playwrite AU SA", serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,8 +30,9 @@ h1 {
 }
 
 #searchInput {
-    padding: 10px;
-    font-size: 16px;
+    font-family: "Playwrite AU SA", serif;
+    padding: 5px;
+    font-size: 15px;
     width: 100%;
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -44,7 +46,8 @@ h1 {
 }
 
 #searchButton {
-    padding: 10px 20px;
+    font-family: "Playwrite AU SA", serif;
+    padding: 5px 20px;
     font-size: 16px;
     background-color: #007bff;
     color: white;
@@ -123,9 +126,10 @@ h1 {
 
 /* Estilo para el mensaje de "Película no encontrada" */
 #noResultMessage {
+    font-family: "Playwrite AU SA", serif;
     text-align: center;
-    font-size: 18px;
-    color: #ff0000;
+    font-size: 20px;
+    color: black;
     padding: 20px;
     display: none;
 }
@@ -152,4 +156,58 @@ h1 {
     background-color: #0056b3;
 }
 
+/* Estilos para el pop-up */
+.pop-up-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: auto;
+  }
   
+  .pop-up {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+    position: relative;
+  }
+  
+  .pop-up-img {
+    max-width: 50%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+/* Estilos para el botón de cerrar */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5); 
+  }
+  
+  .close-btn:hover {
+    background-color: #0056b3;
+  }

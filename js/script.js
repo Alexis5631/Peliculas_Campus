@@ -1,14 +1,72 @@
-import { movies } from './movies.js'; // Importamos las películas
+import { movies } from './movies.js';
 
-const movieContainer = document.getElementById("movieContainer"); // Contenedor de películas
-const searchInput = document.getElementById("searchInput"); // Barra de búsqueda
-const searchButton = document.getElementById("searchButton"); // Botón de búsqueda
-const suggestionsContainer = document.getElementById("suggestionsContainer"); // Contenedor de sugerencias
-const noResultMessage = document.getElementById("noResultMessage"); // Mensaje de "película no existe"
+const movieContainer = document.getElementById("movieContainer");
+const searchInput = document.getElementById("searchInput");
+const searchButton = document.getElementById("searchButton");
+const suggestionsContainer = document.getElementById("suggestionsContainer");
+const noResultMessage = document.getElementById("noResultMessage");
+
+// Contenedor del pop-up
+const popUpContainer = document.createElement("div");
+popUpContainer.classList.add("pop-up-container");
+document.body.appendChild(popUpContainer);
+
+// Función para limpiar y ocultar sugerencias
+function clearSuggestions() {
+  suggestionsContainer.innerHTML = '';
+  suggestionsContainer.style.display = 'none';
+}
+
+// Función para mostrar sugerencias en la barra de búsqueda
+function showSuggestions(searchTerm) {
+  return new Promise((resolve, reject) => {
+    try {
+      clearSuggestions();
+
+      if (!searchTerm) {
+        resolve([]);
+        return;
+      }
+
+      setTimeout(() => {
+        const filteredMovies = movies.filter(movie => 
+          movie.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+        );
+
+        if (filteredMovies.length > 0) {
+          suggestionsContainer.style.display = 'block';
+          
+          filteredMovies.forEach(movie => {
+            const suggestionItem = document.createElement("div");
+            suggestionItem.classList.add("suggestion-item");
+            suggestionItem.textContent = movie.title;
+            
+            suggestionItem.addEventListener('click', () => {
+              searchInput.value = movie.title;
+              clearSuggestions();
+              displayMovies([movie]);
+            });
+
+            suggestionsContainer.appendChild(suggestionItem);
+          });
+
+          resolve(filteredMovies);
+        } else {
+          clearSuggestions();
+          resolve([]);
+        }
+      }, 300);
+
+    } catch (error) {
+      clearSuggestions();
+      reject(error);
+    }
+  });
+}
 
 // Función para mostrar todas las películas
 function displayMovies(moviesToDisplay) {
-  movieContainer.innerHTML = ''; // Limpiamos las películas mostradas
+  movieContainer.innerHTML = '';
   moviesToDisplay.forEach(movie => {
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
@@ -17,10 +75,9 @@ function displayMovies(moviesToDisplay) {
       <img src="${movie.image}" alt="${movie.title}">
       <h3>${movie.title}</h3>
       <p>${movie.description}</p>
-      <button class="details-button">Ver detalles</button> <!-- Botón añadido -->
+      <button class="details-button">Ver detalles</button>
     `;
 
-    // Agregar evento al botón "Ver detalles"
     const detailsButton = movieCard.querySelector(".details-button");
     detailsButton.addEventListener("click", () => showMovieDetails(movie));
 
@@ -28,57 +85,51 @@ function displayMovies(moviesToDisplay) {
   });
 }
 
-// Función para mostrar detalles de una película
+// Función para mostrar detalles de una película en el pop-up
 function showMovieDetails(movie) {
-  alert(`Título: ${movie.title}\nDescripción: ${movie.description}\nCategoría: ${movie.category}`);
+  popUpContainer.innerHTML = `
+    <div class="pop-up">
+      <button class="close-btn">X</button>
+      <img src="${movie.image}" alt="${movie.title}" class="pop-up-img">
+      <h2>${movie.title}</h2>
+      <p><strong>Descripción:</strong> ${movie.description}</p>
+      <p><strong>Categoría:</strong> ${movie.category}</p>
+      <p><strong>Duración:</strong> ${movie.duration}</p>
+      <p><strong>Fecha de lanzamiento:</strong> ${movie.releaseDate}</p>
+    </div>
+  `;
+
+  // Mostrar el pop-up
+  popUpContainer.style.display = 'flex';
+
+  // Evento para el pop-up
+  const closeButton = popUpContainer.querySelector('.close-btn');
+  closeButton.addEventListener('click', () => {
+    popUpContainer.style.display = 'none';
+  });
 }
 
-// Función para mostrar sugerencias en la barra de búsqueda
-function showSuggestions(searchTerm) {
-  suggestionsContainer.innerHTML = ''; // Limpiar las sugerencias previas
-
-  const filteredMovies = movies.filter(movie => movie.title.toLowerCase().startsWith(searchTerm.toLowerCase()));
-
-  if (filteredMovies.length > 0) {
-    suggestionsContainer.style.display = 'block'; // Mostrar las sugerencias
-    filteredMovies.forEach(movie => {
-      const suggestionItem = document.createElement("div");
-      suggestionItem.classList.add("suggestion-item");
-      suggestionItem.textContent = movie.title;
-      
-      // Agregar click en la sugerencia
-      suggestionItem.addEventListener('click', () => {
-        searchInput.value = movie.title;
-        suggestionsContainer.style.display = 'none'; // Ocultar sugerencias al seleccionar una
-        displayMovies([movie]); // Muestra solo la película seleccionada
-      });
-
-      suggestionsContainer.appendChild(suggestionItem);
-    });
-  } else {
-    suggestionsContainer.style.display = 'none'; // Ocultar sugerencias si no hay coincidencias
-  }
-}
-
-// Función para manejar el evento de búsqueda
+// Función para manejar la búsqueda
 function searchMovies() {
   const searchTerm = searchInput.value.trim();
 
   if (searchTerm === '') {
-    displayMovies(movies); // Mostrar todas las películas si no hay búsqueda
-    noResultMessage.style.display = 'none'; // Ocultar mensaje si hay contenido
-    suggestionsContainer.style.display = 'none'; // Ocultar sugerencias
+    displayMovies(movies);
+    noResultMessage.style.display = 'none';
+    clearSuggestions();
   } else {
-    const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredMovies = movies.filter(movie => 
+      movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     
     if (filteredMovies.length > 0) {
       displayMovies(filteredMovies);
-      noResultMessage.style.display = 'none'; // Ocultar mensaje si hay resultados
-      suggestionsContainer.style.display = 'none'; // Ocultar sugerencias al encontrar resultados
+      noResultMessage.style.display = 'none';
+      clearSuggestions();
     } else {
-      movieContainer.innerHTML = ''; // Limpiar el contenedor
-      noResultMessage.style.display = 'block'; // Mostrar el mensaje si no hay resultados
-      suggestionsContainer.style.display = 'none'; // Ocultar sugerencias si no hay resultados
+      movieContainer.innerHTML = '';
+      noResultMessage.style.display = 'block';
+      clearSuggestions();
     }
   }
 }
@@ -87,26 +138,39 @@ function searchMovies() {
 displayMovies(movies);
 
 // Evento para manejar el input de búsqueda
-searchInput.addEventListener('input', () => {
-  const searchTerm = searchInput.value.trim();
+searchInput.addEventListener('input', (e) => {
+  const searchTerm = e.target.value.trim();
 
-  if (searchTerm) {
-    showSuggestions(searchTerm);
-  } else {
-    displayMovies(movies); // Mostrar todas las películas si el input está vacío
-    noResultMessage.style.display = 'none'; // Ocultar mensaje si está vacío
-    suggestionsContainer.style.display = 'none'; // Ocultar sugerencias si está vacío
+  if (!searchTerm) {
+    clearSuggestions();
+    displayMovies(movies);
+    noResultMessage.style.display = 'none';
+    return;
+  }
+
+  showSuggestions(searchTerm)
+    .then(filteredMovies => {
+      console.log(`Se encontraron ${filteredMovies.length} sugerencias`);
+    })
+    .catch(error => {
+      console.error('Error al mostrar sugerencias:', error);
+      clearSuggestions();
+    });
+});
+
+// Agregar evento para limpiar sugerencias al hacer clic fuera
+document.addEventListener('click', (e) => {
+  if (!suggestionsContainer.contains(e.target) && e.target !== searchInput) {
+    clearSuggestions();
   }
 });
 
-// Evento para manejar el botón de búsqueda
-searchButton.addEventListener('click', () => {
-  searchMovies(); // Ejecutar búsqueda al hacer clic en el botón
-});
+// Evento de búsqueda al presionar el botón
+searchButton.addEventListener('click', searchMovies);
 
-// Evento para manejar el "Enter" en la barra de búsqueda
+// Evento de búsqueda al presionar Enter
 searchInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
-    searchMovies(); // Ejecutar búsqueda al presionar "Enter"
+    searchMovies();
   }
 });
